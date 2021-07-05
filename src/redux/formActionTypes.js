@@ -1,0 +1,2 @@
+export const ADD_FIELDS = "ADD_FIELDS";
+export const TOGGLE_MODAL_IS_VISIBLE = "ADD_FIELDS";
