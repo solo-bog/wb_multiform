@@ -12,7 +12,19 @@ const Step2 = () => {
   } = useForm();
   const country = useSelector((state) => state.form.data.country);
   const onSubmit = useFormStepSubmit("/result");
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const beforeUnloadHandler = (e) => {
+      if (e) {
+        e.returnValue = "Sure?";
+      }
+      // For Safari
+      return "Sure?";
+    };
+    window.addEventListener("beforeunload", beforeUnloadHandler);
+    return () => {
+      window.removeEventListener("beforeunload", beforeUnloadHandler);
+    };
+  }, []);
   return (
     <>
       <Link to="/help">Help?</Link>
@@ -26,7 +38,14 @@ const Step2 = () => {
         )}
         <input type="submit" />
       </form>
-      <Prompt when message="Are you sure you want to leave?" />
+      <Prompt
+        message={(location) =>
+          location.pathname.startsWith("/result") ||
+          location.pathname.startsWith("/help")
+            ? true
+            : `Are you sure you want to go to ${location.pathname}?`
+        }
+      />
     </>
   );
 };
